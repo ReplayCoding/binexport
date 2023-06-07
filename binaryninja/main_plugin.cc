@@ -535,6 +535,13 @@ bool Plugin::Init() {
 
 }  // namespace security::binexport
 
+extern "C" BINARYNINJAPLUGIN void
+BEExportFile(const char* filename, BNBinaryView* handle) {
+  BinaryNinja::Ref<BinaryNinja::BinaryView> view = new BinaryNinja::BinaryView(BNNewViewReference(handle));
+
+  security::binexport::ExportBinary(filename, view);
+}
+
 extern "C" BINARYNINJAPLUGIN uint32_t CorePluginABIVersion() {
   // Previously, BinExport worked around Binary Ninja's ABI version handling,
   // to make sure to have it try and load the plugin unconditionally. This
